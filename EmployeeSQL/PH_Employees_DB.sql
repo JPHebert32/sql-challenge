@@ -1,71 +1,77 @@
--- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
 -- Link to schema: https://app.quickdatabasediagrams.com/#/d/LsFo3S
--- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
-
 -- Physical
-CREATE TABLE "Employees" (
-    "emp_no" INT   NOT NULL,
-    "emp_title_id" VARCHAR(5)   NOT NULL,
-    "birth_date" VARCHAR(10)   NOT NULL,
-    "first_name" VARCHAR(30)   NOT NULL,
-    "last_name" VARCHAR(30)   NOT NULL,
-    "sex" VARCHAR(1)   NOT NULL,
-    "hire_date" VARCHAR(10)   NOT NULL,
-    CONSTRAINT "pk_Employees" PRIMARY KEY (
-        "emp_no"
+CREATE TABLE employees (
+    emp_no INT   NOT NULL,
+    emp_title_id VARCHAR(5)   NOT NULL,
+    birth_date DATE   NOT NULL,
+    first_name VARCHAR(30)   NOT NULL,
+    last_name VARCHAR(30)   NOT NULL,
+    sex VARCHAR(1)   NOT NULL,
+    hire_date DATE   NOT NULL,
+    CONSTRAINT pk_employees PRIMARY KEY (
+        emp_no
      )
 );
 
-CREATE TABLE "Titles" (
-    "title_id" VARCHAR(5)   NOT NULL,
-    "title" VARCHAR(30)   NOT NULL,
-    CONSTRAINT "pk_Titles" PRIMARY KEY (
-        "title_id"
+CREATE TABLE titles (
+    title_id VARCHAR(5)   NOT NULL,
+    title VARCHAR(30)   NOT NULL,
+    CONSTRAINT pk_titles PRIMARY KEY (
+        title_id
      )
 );
 
-CREATE TABLE "Salaries" (
-    "emp_no" INT   NOT NULL,
-    "salary" INT   NOT NULL
+CREATE TABLE salaries (
+    emp_no INT   NOT NULL,
+    salary INT   NOT NULL
 );
 
-CREATE TABLE "Departments" (
-    "dept_no" VARCHAR(5)   NOT NULL,
-    "dept_name" VARCHAR(30)   NOT NULL,
-    CONSTRAINT "pk_Departments" PRIMARY KEY (
-        "dept_no"
+CREATE TABLE departments (
+    dept_no VARCHAR(5)   NOT NULL,
+    dept_name VARCHAR(30)   NOT NULL,
+    CONSTRAINT pk_departments PRIMARY KEY (
+        dept_no
      )
 );
 
-CREATE TABLE "Dept_Managers" (
-    "dept_no" VARCHAR(5)   NOT NULL,
-    "emp_no" INT   NOT NULL
+CREATE TABLE dept_managers (
+    dept_no VARCHAR(5)   NOT NULL,
+    emp_no INT   NOT NULL
 );
 
-CREATE TABLE "Dept_Employees" (
-    "emp_no" INT   NOT NULL,
-    "dept_no" VARCHAR(5)   NOT NULL
+CREATE TABLE dept_employees (
+    emp_no INT   NOT NULL,
+    dept_no VARCHAR(5)   NOT NULL
 );
 
-ALTER TABLE "Employees" ADD CONSTRAINT "fk_Employees_emp_title_id" FOREIGN KEY("emp_title_id")
-REFERENCES "Titles" ("title_id");
+ALTER TABLE employees ADD CONSTRAINT fk_employees_emp_title_id FOREIGN KEY(emp_title_id)
+REFERENCES titles (title_id);
 
-ALTER TABLE "Salaries" ADD CONSTRAINT "fk_Salaries_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "Employees" ("emp_no");
+ALTER TABLE salaries ADD CONSTRAINT fk_salaries_emp_no FOREIGN KEY(emp_no)
+REFERENCES employees (emp_no);
 
-ALTER TABLE "Dept_Managers" ADD CONSTRAINT "fk_Dept_Managers_dept_no" FOREIGN KEY("dept_no")
-REFERENCES "Departments" ("dept_no");
+ALTER TABLE dept_managers ADD CONSTRAINT fk_dept_managers_dept_no FOREIGN KEY(dept_no)
+REFERENCES departments (dept_no);
 
-ALTER TABLE "Dept_Managers" ADD CONSTRAINT "fk_Dept_Managers_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "Employees" ("emp_no");
+ALTER TABLE dept_managers ADD CONSTRAINT fk_dept_managers_emp_no FOREIGN KEY(emp_no)
+REFERENCES employees (emp_no);
 
-ALTER TABLE "Dept_Employees" ADD CONSTRAINT "fk_Dept_Employees_emp_no" FOREIGN KEY("emp_no")
-REFERENCES "Employees" ("emp_no");
+ALTER TABLE dept_employees ADD CONSTRAINT fk_dept_employees_emp_no FOREIGN KEY(emp_no)
+REFERENCES employees (emp_no);
 
-ALTER TABLE "Dept_Employees" ADD CONSTRAINT "fk_Dept_Employees_dept_no" FOREIGN KEY("dept_no")
-REFERENCES "Departments" ("dept_no");
+ALTER TABLE dept_employees ADD CONSTRAINT fk_dept_employees_dept_no FOREIGN KEY(dept_no)
+REFERENCES departments (dept_no);
 
+ALTER TABLE employees
+    ALTER COLUMN hire_date TYPE DATE USING hire_date::DATE;
 
-SELECT * FROM "employees";
+ALTER TABLE employees
+    ALTER COLUMN birth_date TYPE DATE USING birth_date::DATE;
 
-
+-- CHECK IMPORTED DATA FROM CSV'S
+SELECT * FROM departments;
+SELECT * FROM dept_employees;
+SELECT * FROM dept_managers;
+SELECT * FROM employees;
+SELECT * FROM salaries;
+SELECT * FROM titles;
