@@ -1,3 +1,6 @@
+-- List the department of each employee with the following information:
+-- employee number, last name, first name, and department name.
+
 DROP VIEW emp_department;
 
 CREATE VIEW emp_department AS
