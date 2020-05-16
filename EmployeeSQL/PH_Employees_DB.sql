@@ -70,19 +70,14 @@ REFERENCES employees (emp_no);
 ALTER TABLE dept_employees ADD CONSTRAINT fk_dept_employees_dept_no FOREIGN KEY(dept_no)
 REFERENCES departments (dept_no);
 
-ALTER TABLE employees
-    ALTER COLUMN hire_date TYPE DATE USING hire_date::DATE;
-
-ALTER TABLE employees
-    ALTER COLUMN birth_date TYPE DATE USING birth_date::DATE;
-
--- CHECK IMPORTED DATA FROM CSV'S
+-- IMPORTED DATA FROM CSV'S IN THE FOLLOWING ORDER THEN CHECK TABLES
 SELECT * FROM departments;
+SELECT * FROM titles;
+SELECT * FROM employees;
 SELECT * FROM dept_employees;
 SELECT * FROM dept_managers;
-SELECT * FROM employees;
 SELECT * FROM salaries;
-SELECT * FROM titles;
+
 
 ----------------------------------------------------------------------------------------------
 -- 1. List the following details of each employee:
